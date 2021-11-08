@@ -1,1 +1,367 @@
+<!DOCTYPE html>
+<html class="no-touch" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="HandsOn_DB2CognosAnalytics.md_files/bootstrap.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="HandsOn_DB2CognosAnalytics.md_files/default.css">
+  <style type="text/css">/* this file is used for labs on cognitiveclass.ai that were written in markdown */
 
+/* applies to images, i.e. "![]()" in markdown */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* add padding and margins */
+body {
+  padding: 10px;
+  margin: 10px;
+}
+
+/* applies to tables, i.e. "|--|--|" in markdown */
+table td,
+table th {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+/* applies to using quotes, i.e. ">" in markdown */
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 1em 10px 0.1em 10px;
+  quotes: '\201C''\201D''\2018''\2019';
+}
+
+/* the headers need some spacing */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+  padding-top: 20px;
+}
+
+/* Add padding between nested list item */
+ul > li > ul {
+  padding-bottom: 1rem;
+}
+
+.code-badge-language {
+  display: none;
+}
+.code-badge-copy-icon {
+  background: url('data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhciIgZGF0YS1pY29uPSJjb3B5IiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtY29weSBmYS13LTE0IiByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ0OCA1MTIiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTQzMy45NDEgNjUuOTQxbC01MS44ODItNTEuODgyQTQ4IDQ4IDAgMCAwIDM0OC4xMTggMEgxNzZjLTI2LjUxIDAtNDggMjEuNDktNDggNDh2NDhINDhjLTI2LjUxIDAtNDggMjEuNDktNDggNDh2MzIwYzAgMjYuNTEgMjEuNDkgNDggNDggNDhoMjI0YzI2LjUxIDAgNDgtMjEuNDkgNDgtNDh2LTQ4aDgwYzI2LjUxIDAgNDgtMjEuNDkgNDgtNDhWOTkuODgyYTQ4IDQ4IDAgMCAwLTE0LjA1OS0zMy45NDF6TTI2NiA0NjRINTRhNiA2IDAgMCAxLTYtNlYxNTBhNiA2IDAgMCAxIDYtNmg3NHYyMjRjMCAyNi41MSAyMS40OSA0OCA0OCA0OGg5NnY0MmE2IDYgMCAwIDEtNiA2em0xMjgtOTZIMTgyYTYgNiAwIDAgMS02LTZWNTRhNiA2IDAgMCAxIDYtNmgxMDZ2ODhjMCAxMy4yNTUgMTAuNzQ1IDI0IDI0IDI0aDg4djIwMmE2IDYgMCAwIDEtNiA2em02LTI1NmgtNjRWNDhoOS42MzJjMS41OTEgMCAzLjExNy42MzIgNC4yNDMgMS43NTdsNDguMzY4IDQ4LjM2OGE2IDYgMCAwIDEgMS43NTcgNC4yNDNWMTEyeiI+PC9wYXRoPjwvc3ZnPg==');
+  background-size: 100% 100%;
+}
+
+.code-badge {
+  bottom: 0 !important;
+  top: unset !important;
+  background: unset !important;
+}
+
+.code-badge > .code-badge-check-icon {
+  background: green;
+}
+.code-badge-check-icon {
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 0 7px;
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGFyaWEtaGlkZGVuPSJ0cnVlIiBmb2N1c2FibGU9ImZhbHNlIiBkYXRhLXByZWZpeD0iZmFzIiBkYXRhLWljb249ImNoZWNrIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtY2hlY2sgZmEtdy0xNiIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgc3R5bGU9IiYjMTA7ICAgIGNvbG9yOiAjMmFmZjMyOyYjMTA7Ij48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiLz48L3N2Zz4=');
+  background-size: 100% 100%;
+}
+</style></head>
+  <body>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/IDSNlogo.png" width="200" height="200">
+    <h1>Hands-on Lab: Analyzing DB2 Data With Cognos Analytics</h1>
+    <h2>Objective for Exercise:</h2>
+    <ul>
+      <li>To create a dashboard with Billing data on DB2 using Cognos Analytics and analyze the regionwise spend.</li>
+    </ul>
+    <h3>Prerequisites</h3>
+    <p>Prior to starting this lab please ensure you have completed the previous labs to:</p>
+    <ul>
+      <li><a href="https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DB0201EN-SkillsNetwork/labs/Labs_Coursera_V5/labs/Lab%20-%20Sign%20up%20for%20IBM%20Cloud%20-%20Create%20Db2%20service%20instance%20-%20Get%20started%20with%20the%20Db2%20console/instructional-labs.md.html" target="_blank" rel="external">Create an IBM Cloud Account</a></li>
+      <li><a href="https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DB0201EN-SkillsNetwork/labs/Labs_Coursera_V5/labs/Lab%20-%20Sign%20up%20for%20IBM%20Cloud%20-%20Create%20Db2%20service%20instance%20-%20Get%20started%20with%20the%20Db2%20console/instructional-labs.md.html" target="_blank" rel="external">Provision an instance of DB2 on Cloud</a></li>
+      <li><a href="https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DV0130EN-SkillsNetwork/Hands-on%20Labs/Lab%204%20-%20Getting%20Started%20with%20Cognos%20Analytics/instructions.md.html" target="_blank" rel="external">Provision an instance of Cognos Analytics</a></li>
+    </ul>
+    <h3>Task 1- Load the data in DB2</h3>
+    <p>If you have service credentails created, skip steps 1 and 2.</p>
+    <ol>
+      <li>Click on <strong>Service Credentials</strong> and create new credentials.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/service_credential_create.png" alt="Generate service credentials" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="2">
+      <li>Give the credential a name and <strong>Manager</strong> privilige and add it.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/name_add_service_cred.png" alt="Name the credentials" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="3">
+      <li>Click on the down arrow next to the credential. You will see 
+the credential details. Make a note of the username, password and jdbc 
+connection url. These will be used in later part of the lab to connect 
+from Cognos.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/service_creds_list.png" alt="Credential details" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <img src="HandsOn_DB2CognosAnalytics.md_files/cred_details.png" alt="Service credential name and password" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <blockquote>
+      <p>*Note:You have to replace the placeholder for username and 
+password in the jdbc url string with actual username and password. 
+Remove the angle brackets.</p>
+    </blockquote>
+    <ol start="4">
+      <li>
+        <p>Go to the <a href="https://github.com/ibm-developer-skills-network/yczvh-DataFilesForIBMProjects/raw/master/cloud-billing-dataset.csv" target="_blank" rel="external">data link</a>. Right-click and choose <strong>Save AS...</strong>. Save the file in your local system as <em>cloud-billing-dataset.csv</em>.</p>
+      </li>
+      <li>
+        <p>Once the instance is created from the db2 instance page, choose <strong>Manage</strong> from the left menu and click on <strong>Go to UI</strong>.</p>
+      </li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/db2homepage.png" alt="Click Manage and Go to UI" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="6">
+      <li>Click on the <strong>Data</strong> icon on the left menu, choose <strong>Load Data</strong> and broswe and select the file, <strong>cloud-billing-dataset.csv</strong> which you saved in your local system.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/db2LoadData.png" alt="Select cloud-billing-dataset.csv" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="7">
+      <li>Choose the <strong>Schema</strong>, click on <strong>New Table +</strong> and create a new table with the name <strong>BillingData</strong> and click on Create.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/chooseSchema.png" alt="Create new BillingData table" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="8">
+      <li>You will see the table is added to the schema. Click on <strong>Next</strong> to load the data from the file.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/loadTable.png" alt="Click Next to load file data" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="9">
+      <li>The table is loaded. You will see that each column has data 
+type and column width auto generated based on the content. Edit column 
+attributes by clicking on the pencil icon next to the respective 
+attributes to change the width of <strong>country</strong> column to varchar of 30 and <strong>month</strong> column to varchar of 7.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/edit_column_attr.png" alt="New BillingData table" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <img src="HandsOn_DB2CognosAnalytics.md_files/year_month.png" alt="Change column width to varchar 30" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <img src="HandsOn_DB2CognosAnalytics.md_files/country.png" alt="Column width as varchar 30" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="10">
+      <li>Once the column attributes are changed, check to see if it reflects and then click on <strong>Next</strong></li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/loadTable_next.png" alt="Attribute changes reflected" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="11">
+      <li>Review the settings and click on <strong>Begin Load</strong> to load the data.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/begin_load.png" alt="Loading data" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="12">
+      <li>If the data is successfully loaded, you get a message on the screen indicating the number of rows that have been loaded.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/data_loaded.png" alt="Screen message showing number of loaded rows" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <h3>Task 2 - Connect Cognos to DB2</h3>
+    <ol>
+      <li>Go to myibm.ibm.com, login with your IBM Cloud credentails and launch Cognos Analytics.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/myibm_launchcognos.png" alt="Launch Cognos Analytics" style="border: solid 2px grey;width:50%">
+    <ol start="2">
+      <li>Choose the hambuger menu on the upper left and select <strong>Manage</strong>.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/manage_cognos.png" alt="Click Manage" style="border: solid 2px grey;width:50%">
+    <ol start="3">
+      <li>Choose the <strong>Data Server Connection</strong>.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/cognos_dataserverconn.png" alt="Manage data server connection" style="border: solid 2px grey;width:50%">
+    <ol start="4">
+      <li>Click on <strong>+</strong> to add a data server and choose IBM DB2 from the list shown.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/cognos_choosedb2.png" alt="Add DB2 data server" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="5">
+      <li>Choose to <strong>Connect Anonymously</strong> and enter the jdbc url with your db2 user name and password that you copied earlier in Task 1. Click on <strong>Test</strong> to test the connection.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/jdbc_connstring.png" alt="Test connection" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="6">
+      <li>If the test succeeded and Cognos managed to connect to the Db2 instance, you will see <strong>Success</strong> with a green tick next to it. Click on the pencil icon, give the connection a name,<strong>MyDB2</strong>, and save it.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/save_conn.png" alt="Name and save connection" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="7">
+      <li>Go to the <strong>Schema</strong> and click on the <strong>'...'</strong> next to the schema name. Choose <strong>Load Metadata</strong> from the menu that appears.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/cognos_loadmetadata.png" alt="Load metadata" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="8">
+      <li>Once the metadata is loaded you will see a green check mark 
+next to the schema name and it will also indicate how many tables are 
+available in the schema for analysis.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/cognos_metadataloaded.png" alt="Available tables in schema" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <h3>Task 3 - Create Data Module in Cognos</h3>
+    <ol>
+      <li>From the menu, choose <strong>New</strong> and then from the submenu choose <strong>Data Module</strong>.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/cognos_newdatamodule.png" alt="New Data Module button" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px; width:50%">
+    <ol start="2">
+      <li>Click the <strong>Data servers</strong> icon and choose the <strong>MyDB2</strong> connection that we created in the previous task.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/choose_dataconnection.png" alt="Choosing MyDB2 connection" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="3">
+      <li>Choose the schema from where you want to load data.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/cognos_chooseschema.png" alt="Choosing schema to load data" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="4">
+      <li>Choose the <strong>Select Tables</strong> option and click <strong>OK</strong>.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/select_tables.png" alt="Selecting tables" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="5">
+      <li>It will list the tables available in the schema. For this lab, we will use the <strong>Billing data</strong> table. Choose the table and click on <strong>OK</strong>. If you want to view the data you may click on <strong>Refresh</strong>.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/choose_tableforanalysis.png" alt="Choosing Billing data table for analysis" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <ol start="6">
+      <li>The <strong>Data module</strong> loaded with the data appears. Click on <strong>Save</strong>, once you see that the data is correctly loaded.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/view_data.png" alt="Saving data when it loads" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <p>7.You can now save it with an appropriate name under <strong>My Content</strong>.</p>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/save_datamodule.png" alt="Saving datamodule" style="border: solid 2px grey;margin-left: 30px;margin-top: 10px">
+    <h3>Task 4 - Create Dashboard</h3>
+    <ol>
+      <li>From the IBM Cognos menu, choose, <strong>New</strong> and click on <strong>Dashboard</strong>.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/cognos_dashboardmenu.png" alt="Creating dashboard" style="border: solid 2px grey;width:50%">
+    <ol start="2">
+      <li>Choose the <strong>Tabbed</strong> as shown in the following image.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/choose_template.png" alt="Choosing Tabbed" style="border: solid 2px grey;">
+    <ol start="3">
+      <li>Click on <strong>Select Source</strong> to choose the source for the template.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/select_templatesource.png" alt="Choosing template source" style="border: solid 2px grey;">
+    <ol start="4">
+      <li>From the list, choose the data module we just created and click on <strong>Add</strong>.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/select_datamodule.png" alt="Choosing data module" style="border: solid 2px grey;">
+    <h3>Task 5 - Visualization</h3>
+    <p>You will now see the table listed on the left panel with all the attributes.</p>
+    <ol>
+      <li>Drag and drop the <strong>Billed Amount</strong> on the template.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/drop_billing.png" alt="Drag and drop Billed Amount on template" style="border: solid 2px grey;">
+    <ol start="2">
+      <li>The total billed amount will now appear on the Dashboard. The 
+size and position can be adjusted as per requirement and the text 
+display can be edited and formatted by double-clicking on it.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/dashboard_billing.png" alt="Editing billed amount on dashboard" style="border: solid 2px grey;">
+    <ol start="3">
+      <li>Drag and drop <strong>Billed Amount</strong> and <strong>Industry</strong> onto the dashboard as shown in the following image. With this, we can visualize the build amount per industry.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/drop_industrybilling.png" alt="Drag and drop Billed Amount and Industry to dashboard" style="border: solid 2px grey;">
+    <ol start="4">
+      <li>Drag and drop <strong>Billed Amount, Country and Industry</strong> onto the dashboard as shown in the following image. This will generate a heat map of spending by country and by industry.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/drop_countryindustrybilling.png" alt="Generate heat map of spending by country and industry" style="border: solid 2px grey;">
+    <ol start="5">
+      <li>The finished dashboard will appear as in the following image.</li>
+    </ol>
+    <img src="HandsOn_DB2CognosAnalytics.md_files/final_dashboard.png" alt="Finished dashboard" style="border: solid 2px grey;">
+    <ol start="6">
+      <li>Optionally, try to change the properties and settings to see 
+how the dashboard changes. You can also observe the billed amount 
+changing as you click on a region on the heat map or the bar graph.</li>
+    </ol>
+    <h2>Author(s)</h2>
+    <p><a href="https://www.linkedin.com/in/lavanya-sunderarajan-199a445?utm_medium=Exinfluencer&amp;utm_source=Exinfluencer&amp;utm_content=000026UJ&amp;utm_term=10006555&amp;utm_id=NA-SkillsNetwork-Channel-SkillsNetworkCoursesIBMDB0260ENSkillsNetwork27338483-2021-01-01" target="_blank" rel="external">Lavanya T S</a></p>
+    <h2>Changelog</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Version</th>
+          <th>Changed by</th>
+          <th>Change Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2020-09-20</td>
+          <td>1.0</td>
+          <td>Lavanya</td>
+          <td>Created the lab</td>
+        </tr>
+        <tr>
+          <td>2021-10-7</td>
+          <td>1.1</td>
+          <td>Steve Hord</td>
+          <td>Copy Edit lab</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2></h2>
+    <h3 align="center">© IBM Corporation 2021. All rights reserved.</h3>
+    <h3></h3>
+    <script>window.addEventListener('load', function() {
+snFaculty.inject();
+});</script>
+    <script src="HandsOn_DB2CognosAnalytics.md_files/inject.js"></script>
+    <script src="HandsOn_DB2CognosAnalytics.md_files/highlight.js"></script>
+    <script src="HandsOn_DB2CognosAnalytics.md_files/highlightjs-badge.js"></script>
+  
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div><textarea id="BFI_DATA" style="width: 1px; height: 1px; display: none;"></textarea><title> </title><div id="WidgetFloaterPanels" translate="no" style="display: none; text-align: left; direction: ltr; visibility: hidden;" class="LTRStyle"> <div id="WidgetFloater" style="display: none" onmouseover="Microsoft.Translator.OnMouseOverFloater()" onmouseout="Microsoft.Translator.OnMouseOutFloater()"> <div id="WidgetLogoPanel"> <span id="WidgetTranslateWithSpan"><span>TRANSLATE with </span><img id="FloaterLogo"></span> <span id="WidgetCloseButton" title="Exit Translation" onclick="Microsoft.Translator.FloaterOnClose()">x</span></div> <div id="LanguageMenuPanel"> <div class="DDStyle_outer"><input name="LanguageMenu_svid" type="text" id="LanguageMenu_svid" style="display:none;" autocomplete="on" value="en" onclick="this.select()"> <input name="LanguageMenu_textid" type="text" id="LanguageMenu_textid" style="display:none;" autocomplete="on" onclick="this.select()"> <span onselectstart="return false" tabindex="0" class="DDStyle" id="__LanguageMenu_header" onclick="return LanguageMenu &amp;&amp; !LanguageMenu.Show('__LanguageMenu_popup', event);" onkeydown="return LanguageMenu &amp;&amp; !LanguageMenu.Show('__LanguageMenu_popup', event);">English</span> <div style="position:relative;text-align:left;left:0;"><div style="position:absolute;width:;left:0px;"><div class="DDStyle" style="display:none;" id="__LanguageMenu_popup"> <table id="LanguageMenu" border="0"> <tbody><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('ar');" ondragstart="LanguageMenu.ondragstart(event);" href="#ar">Arabic</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('he');" ondragstart="LanguageMenu.ondragstart(event);" href="#he">Hebrew</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('pl');" ondragstart="LanguageMenu.ondragstart(event);" href="#pl">Polish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('bg');" ondragstart="LanguageMenu.ondragstart(event);" href="#bg">Bulgarian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('hi');" ondragstart="LanguageMenu.ondragstart(event);" href="#hi">Hindi</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('pt');" ondragstart="LanguageMenu.ondragstart(event);" href="#pt">Portuguese</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('ca');" ondragstart="LanguageMenu.ondragstart(event);" href="#ca">Catalan</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('mww');" ondragstart="LanguageMenu.ondragstart(event);" href="#mww">Hmong Daw</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('ro');" ondragstart="LanguageMenu.ondragstart(event);" href="#ro">Romanian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('zh-CHS');" ondragstart="LanguageMenu.ondragstart(event);" href="#zh-CHS">Chinese Simplified</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('hu');" ondragstart="LanguageMenu.ondragstart(event);" href="#hu">Hungarian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('ru');" ondragstart="LanguageMenu.ondragstart(event);" href="#ru">Russian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('zh-CHT');" ondragstart="LanguageMenu.ondragstart(event);" href="#zh-CHT">Chinese Traditional</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('id');" ondragstart="LanguageMenu.ondragstart(event);" href="#id">Indonesian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('sk');" ondragstart="LanguageMenu.ondragstart(event);" href="#sk">Slovak</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('cs');" ondragstart="LanguageMenu.ondragstart(event);" href="#cs">Czech</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('it');" ondragstart="LanguageMenu.ondragstart(event);" href="#it">Italian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('sl');" ondragstart="LanguageMenu.ondragstart(event);" href="#sl">Slovenian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('da');" ondragstart="LanguageMenu.ondragstart(event);" href="#da">Danish</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('ja');" ondragstart="LanguageMenu.ondragstart(event);" href="#ja">Japanese</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('es');" ondragstart="LanguageMenu.ondragstart(event);" href="#es">Spanish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('nl');" ondragstart="LanguageMenu.ondragstart(event);" href="#nl">Dutch</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('tlh');" ondragstart="LanguageMenu.ondragstart(event);" href="#tlh">Klingon</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('sv');" ondragstart="LanguageMenu.ondragstart(event);" href="#sv">Swedish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('en');" ondragstart="LanguageMenu.ondragstart(event);" href="#en">English</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('ko');" ondragstart="LanguageMenu.ondragstart(event);" href="#ko">Korean</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('th');" ondragstart="LanguageMenu.ondragstart(event);" href="#th">Thai</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('et');" ondragstart="LanguageMenu.ondragstart(event);" href="#et">Estonian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('lv');" ondragstart="LanguageMenu.ondragstart(event);" href="#lv">Latvian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('tr');" ondragstart="LanguageMenu.ondragstart(event);" href="#tr">Turkish</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('fi');" ondragstart="LanguageMenu.ondragstart(event);" href="#fi">Finnish</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('lt');" ondragstart="LanguageMenu.ondragstart(event);" href="#lt">Lithuanian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('uk');" ondragstart="LanguageMenu.ondragstart(event);" href="#uk">Ukrainian</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('fr');" ondragstart="LanguageMenu.ondragstart(event);" href="#fr">French</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('ms');" ondragstart="LanguageMenu.ondragstart(event);" href="#ms">Malay</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('ur');" ondragstart="LanguageMenu.ondragstart(event);" href="#ur">Urdu</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('de');" ondragstart="LanguageMenu.ondragstart(event);" href="#de">German</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('mt');" ondragstart="LanguageMenu.ondragstart(event);" href="#mt">Maltese</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('vi');" ondragstart="LanguageMenu.ondragstart(event);" href="#vi">Vietnamese</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('el');" ondragstart="LanguageMenu.ondragstart(event);" href="#el">Greek</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('no');" ondragstart="LanguageMenu.ondragstart(event);" href="#no">Norwegian</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('cy');" ondragstart="LanguageMenu.ondragstart(event);" href="#cy">Welsh</a></td> </tr><tr> <td><a tabindex="-1" onclick="return LanguageMenu.onclick('ht');" ondragstart="LanguageMenu.ondragstart(event);" href="#ht">Haitian Creole</a></td><td><a tabindex="-1" onclick="return LanguageMenu.onclick('fa');" ondragstart="LanguageMenu.ondragstart(event);" href="#fa">Persian</a></td><td></td> </tr> </tbody></table> <img alt="" style="height:7px;width:17px;border-width:0px;left:20px;"> </div></div></div></div> <script type="text/javascript"> var LanguageMenu; var LanguageMenu_keys=["ar","bg","ca","zh-CHS","zh-CHT","cs","da","nl","en","et","fi","fr","de","el","ht","he","hi","mww","hu","id","it","ja","tlh","ko","lv","lt","ms","mt","no","fa","pl","pt","ro","ru","sk","sl","es","sv","th","tr","uk","ur","vi","cy"]; var LanguageMenu_values=["Arabic","Bulgarian","Catalan","Chinese Simplified","Chinese Traditional","Czech","Danish","Dutch","English","Estonian","Finnish","French","German","Greek","Haitian Creole","Hebrew","Hindi","Hmong Daw","Hungarian","Indonesian","Italian","Japanese","Klingon","Korean","Latvian","Lithuanian","Malay","Maltese","Norwegian","Persian","Polish","Portuguese","Romanian","Russian","Slovak","Slovenian","Spanish","Swedish","Thai","Turkish","Ukrainian","Urdu","Vietnamese","Welsh"]; var LanguageMenu_callback=function(){ }; var LanguageMenu_popupid='__LanguageMenu_popup'; </script> </div> <div id="CTFLinksPanel"> <span id="ExternalLinksPanel"><a id="HelpLink" title="Help" target="_blank" href="https://go.microsoft.com/?linkid=9722454"> <img id="HelpImg"></a> <a id="EmbedLink" href="javascript:Microsoft.Translator.FloaterShowEmbed()" title="Get this widget for your own site"> <img id="EmbedImg"></a> <a id="ShareLink" title="Share translated page with friends" href="javascript:Microsoft.Translator.FloaterShowSharePanel()"> <img id="ShareImg"></a> </span> </div> <div id="FloaterProgressBar"> <span id="ProgressFill"></span> </div> </div> <div id="WidgetFloaterCollapsed" style="display: none" onmouseover="Microsoft.Translator.OnMouseOverFloater()"> <span>TRANSLATE with </span><img id="CollapsedLogoImg"></div> <div id="FloaterSharePanel" style="display: none"> <div id="ShareTextDiv"> <span id="ShareTextSpan"> COPY THE URL BELOW </span> </div> <div id="ShareTextboxDiv"> <input name="ShareTextbox" type="text" id="ShareTextbox" readonly="readonly" onclick="this.select()"> <!--a id="TwitterLink" title="Share on Twitter"> <img id="TwitterImg" /></a> <a-- id="FacebookLink" title="Share on Facebook"> <img id="FacebookImg" /></a--> <a id="EmailLink" title="Email this translation"> <img id="EmailImg"></a> </div> <div id="ShareFooter"> <span id="ShareHelpSpan"><a id="ShareHelpLink"> <img id="ShareHelpImg"></a></span> <span id="ShareBackSpan"><a id="ShareBack" href="javascript:Microsoft.Translator.FloaterOnShareBackClick()" title="Back To Translation"> Back</a></span> </div> <input name="EmailSubject" type="hidden" id="EmailSubject" value="Check out this page in {0} translated from {1}"> <input name="EmailBody" type="hidden" id="EmailBody" value="Translated: {0}%0d%0aOriginal: {1}%0d%0a%0d%0aAutomatic translation powered by Microsoft® Translator%0d%0ahttp://www.bing.com/translator?ref=MSTWidget"> <input type="hidden" id="ShareHelpText" value="This link allows visitors to launch this page and automatically translate it to {0}."> </div> <div id="FloaterEmbed" style="display: none"> <div id="EmbedTextDiv"> <span id="EmbedTextSpan">EMBED THE SNIPPET BELOW IN YOUR SITE</span> <a id="EmbedHelpLink" title="Copy this code and place it into your HTML."> <img id="EmbedHelpImg"></a> </div> <div id="EmbedTextboxDiv"> <input name="EmbedSnippetTextBox" type="text" id="EmbedSnippetTextBox" readonly="readonly" value="&lt;div id='MicrosoftTranslatorWidget' class='Dark' style='color:white;background-color:#555555'&gt;&lt;/div&gt;&lt;script type='text/javascript'&gt;setTimeout(function(){var s=document.createElement('script');s.type='text/javascript';s.charset='UTF-8';s.src=((location &amp;&amp; location.href &amp;&amp; location.href.indexOf('https') == 0)?'https://ssl.microsofttranslator.com':'http://www.microsofttranslator.com')+'/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&amp;ctf=true&amp;ui=true&amp;settings=manual&amp;from=en';var p=document.getElementsByTagName('head')[0]||document.documentElement;p.insertBefore(s,p.firstChild); },0);&lt;/script&gt;" onclick="this.select()"> </div> <div id="EmbedNoticeDiv"><span id="EmbedNoticeSpan">Enable collaborative features and customize widget: <a href="http://www.bing.com/widget/translator" target="_blank">Bing Webmaster Portal</a></span></div> <div id="EmbedFooterDiv"><span id="EmbedBackSpan"><a href="javascript:Microsoft.Translator.FloaterOnEmbedBackClick()" title="Back To Translation">Back</a></span></div> </div> <script type="text/javascript"> var intervalId = setInterval(function () { if (MtPopUpList) { LanguageMenu = new MtPopUpList(); var langMenu = document.getElementById(LanguageMenu_popupid); var origLangDiv = document.createElement("div"); origLangDiv.id = "OriginalLanguageDiv"; origLangDiv.innerHTML = "<span id='OriginalTextSpan'>ORIGINAL: </span><span id='OriginalLanguageSpan'></span>"; langMenu.appendChild(origLangDiv); LanguageMenu.Init('LanguageMenu', LanguageMenu_keys, LanguageMenu_values, LanguageMenu_callback, LanguageMenu_popupid); window["LanguageMenu"] = LanguageMenu; clearInterval(intervalId); } }, 1); </script> </div></body></html>
